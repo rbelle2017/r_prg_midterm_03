@@ -1,0 +1,112 @@
+---
+title: "The third homework - ggplot2"
+author: "Belle Liu"
+date: "2017年2月19日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE,message=FALSE}
+  library(ggplot2)
+  library(plotly)
+```
+
+> ### diamonds資料集 
+
+```{r echo=FALSE}
+  summary(diamonds)
+```
+
+> ### [鑽石 4C（切割、成色、淨度及克拉總重量）分級制度](http://www.bluenile.com/tw/education/diamonds?track=SideNav)
+>
+* 切割 (cut) :  
+
+    不良  <  良好  <  非常好  <  極佳  <  理想
+    
+    Fair  <  Good  <  Very Good  <  Premium  <  Ideal
+>   
+* 成色 (color) : 
+
+    近乎無色(J-I)  <  幾乎無色(H-G)  <  無色(F-E)  <  完全無色(D)
+    
+    J  <  I  <  H  <  G  <  F  <  E  <  D
+>
+* 淨度 (clarity) : 
+
+    瑕疵(I1)  < 微瑕(SI2-SI1)  <  輕微瑕色(VS2-VS1)  <  極輕微瑕疵(VVS2-VVS1)  <  內部無瑕(IF)
+    
+    I1  < SI2 < SI1 < VS2 < VS1 < VVS2 < VVS1 < IF
+>    
+* 克拉 (carat) :
+    
+    0.25 < 0.5 < 0.75 < 1.0 < 1.5 < 2.0 < 3.0 < 4.0 < 5.0
+
+---
+
+
+>## 1.散佈圖
+      觀測價格及重量對鑽石之淨度是否具有相關性
+
+```{r message=FALSE}
+  ggplot(diamonds, aes(x=carat, y=price, color = clarity)) +
+  geom_point() + 
+  ggtitle(label ="Diamond Price V.S. Carat") +
+  xlab("Carat") +
+  ylab("Price (USD)")
+```
+
+>## 2.線圖
+    篩選切割最理想(Ideal)及淨度最佳(IF)之資料，觀察成色在價格及重量之趨勢表現
+
+```{r message=FALSE}
+  diamond_if <- subset(diamonds,cut=="Ideal" & clarity=="IF" )
+  gg2 <- ggplot(diamond_if, aes(x=carat, y=price, group=color ,color = color)) +
+  geom_line() + 
+  ggtitle(label ="Diamond Price V.S. Carat") +
+  xlab("Carat") +
+  ylab("Price (USD)")
+  ggplotly(gg2)
+```
+
+>## 3.直方圖
+      篩選切割最理想(Ideal)、淨度最佳(IF)及重量相彷(0.30~0.39)之資料，觀察不同成色的價格落點
+```{r message=FALSE}
+  diamond_if <- subset(diamonds,cut=="Ideal" & clarity=="IF"  & carat>=0.3 & carat < 0.4)
+  gg3 <- ggplot(diamond_if, aes(x = price ,fill= color)) +
+  geom_histogram(bins = 25)+
+  ggtitle(label ="Diamond Price") +
+  xlab("Price (USD)") +
+  ylab("Count")
+  ggplotly(gg3)
+```
+
+>## 4.盒鬚圖
+      篩選切割最理想(Ideal)、淨度最佳(IF)及重量相彷(0.30~0.39)之資料，觀察成色與價格之間的關係
+```{r message=FALSE}
+    diamond_if <- subset(diamonds,cut=="Ideal"&clarity=="IF"& carat>=0.3 & carat < 0.4)
+    gg4 <- ggplot(diamond_if, aes(x = color, y =price ,fill= color))+
+    geom_boxplot() +
+    ggtitle(label ="Diamond Color V.S. Price") +
+    xlab("Color") +
+    ylab("Price (USD)")
+    ggplotly(gg4)
+```
+
+>## 5.長條圖
+      觀察不同淨度裡，各類成色的數量比
+```{r message=FALSE}
+    gg5 <- ggplot(diamonds, aes(x =clarity)) +
+    geom_bar(aes(fill = color), position = "dodge") +
+    ggtitle(label ="Diamond Clarity V.S. Color") +
+    xlab("Clarity") +
+    ylab("Count")
+    ggplotly(gg5)
+```
+
+---
+
+> 資料參考:
+    [http://www.bluenile.com/tw/education/diamonds?track=SideNav](http://www.bluenile.com/tw/education/diamonds?track=SideNav)
