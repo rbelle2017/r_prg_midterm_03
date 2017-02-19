@@ -14,33 +14,55 @@ knitr::opts_chunk$set(echo = TRUE)
   library(plotly)
 ```
 
-> ### diamonds資料集 
+> ### diamonds資料框外觀
+
+```{r echo=FALSE}
+  str(diamonds)
+```
+
+> ### diamonds資料框描述性統計 
 
 ```{r echo=FALSE}
   summary(diamonds)
 ```
 
-> ### [鑽石 4C（切割、成色、淨度及克拉總重量）分級制度](http://www.bluenile.com/tw/education/diamonds?track=SideNav)
+
+> ### 鑽石 4C（切割、成色、淨度及克拉）分級制度:
 >
-* 切割 (cut) :  
+* 切割 (cut) :  切割方法決定鑽石閃爍度，切割得越好發出的亮光越多
 
     不良  <  良好  <  非常好  <  極佳  <  理想
     
     Fair  <  Good  <  Very Good  <  Premium  <  Ideal
->   
-* 成色 (color) : 
 
-    近乎無色(J-I)  <  幾乎無色(H-G)  <  無色(F-E)  <  完全無色(D)
+```{r echo=FALSE , results='hide'}
+  levels(diamonds$cut)
+```
     
-    J  <  I  <  H  <  G  <  F  <  E  <  D
+>   
+* 成色 (color) : 成色分級是指欠缺顏色的程度，越是無色品質分級越高
+
+    完全無色(D)  <  無色(E-F)  <  幾乎無色(G-H)  <  近乎無色(I-J)
+    
+    D  <  E  <  F  <  G  <  H  <  I  <  J
+    
+```{r echo=FALSE , results='hide'}
+  levels(diamonds$color)
+```
+
 >
-* 淨度 (clarity) : 
+* 淨度 (clarity) : 瑕疵極微或無瑕疵的鑽石可獲最高的淨度等級
 
     瑕疵(I1)  < 微瑕(SI2-SI1)  <  輕微瑕色(VS2-VS1)  <  極輕微瑕疵(VVS2-VVS1)  <  內部無瑕(IF)
     
     I1  < SI2 < SI1 < VS2 < VS1 < VVS2 < VVS1 < IF
+
+```{r echo=FALSE , results='hide'}
+  levels(diamonds$clarity)
+```
+
 >    
-* 克拉 (carat) :
+* 克拉 (carat) :專門用於計算鑽石重量的單位
     
     0.25 < 0.5 < 0.75 < 1.0 < 1.5 < 2.0 < 3.0 < 4.0 < 5.0
 
